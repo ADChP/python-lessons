@@ -1,4 +1,4 @@
-import urllib.request, urllib.parse, urllib.error
+from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import ssl
 
@@ -12,7 +12,7 @@ line = 18
 
 print('Retrieving: %s' % link)
 for i in range(0, cont):
-    html = urllib.request.urlopen(link, context=ctx).read()
+    html = urlopen(link, context=ctx).read()
     soup = BeautifulSoup(html, 'html.parser')
 
     tags = soup('a')
