@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
 
@@ -6,16 +6,22 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-url = 'http://py4e-data.dr-chuck.net/known_by_Fikret.html'
-inic = 2
-fin = 4
-fin = fin + 1
+link = "http://py4e-data.dr-chuck.net/known_by_Tia.html"
+cont = 7
+line = 18
 
-while fin != 0 :
-    page = urlopen(url, context=ctx).read()
-    soup = BeautifulSoup(page, "html.parser")
-    tags = soup('a')[inic]
-    tags = tags.get('href', None)
-    fin = fin - 1
-    inic = inic + 1
-    print(tags)
+print('Retrieving: %s' % link)
+for i in range(0, cont):
+    html = urllib.request.urlopen(link, context=ctx).read()
+    soup = BeautifulSoup(html, 'html.parser')
+
+    tags = soup('a')
+    ps = 0
+
+    for tag in tags:
+        ps += 1
+        if ps == line:
+            print('Retrieving:', tag.get('href', None))
+            link = tag.get('href', None)
+            ps = 0
+            break
